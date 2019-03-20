@@ -5,6 +5,7 @@ import com.riane.apilimitrate.convert.MyStringToUserConvert;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.core.convert.converter.GenericConverter;
@@ -27,6 +28,8 @@ import java.util.Set;
  * 2.controller类中通过{@linkplain InitBinder}注解实现绑定，参考类{@linkplain InitBinderController}
  * 3.全局配置参考{@linkplain MyWebInitBinder},主要是实现{@linkplain WebBindingInitializer} 接口,
  * 并通过RequestMappingHandlerAdapter#setWebBindingInitializer()方法设置
+ * <p>
+ * 优先级为2>1>3
  */
 
 
@@ -41,7 +44,12 @@ public class MyConverterConfig {
         return handlerAdapter;
     }
 
-
+    /**
+     * {@linkplain ConversionService}装备自定义的转换器
+     *
+     * @param convert
+     * @return
+     */
     @Bean
     public ConversionServiceFactoryBean conversionServiceFactoryBean(MyStringToUserConvert convert) {
         ConversionServiceFactoryBean serviceFactoryBean = new ConversionServiceFactoryBean();
